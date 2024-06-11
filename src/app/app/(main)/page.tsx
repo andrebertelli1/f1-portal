@@ -1,17 +1,17 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Overview } from "./_components/overview"
-import { RaceResult } from "./_components/race-result"
-import CardRaceDetails from "./_components/card-race-details"
-import { getLastRace } from "./actions"
-import CardStatistics from "./_components/card-statistics"
-import { GenerateNewRaceDialog } from "./_components/generate-new-race-dialog"
+} from '@/components/ui/card'
+import { Overview } from './_components/overview'
+import { RaceResult } from './_components/race-result'
+import CardRaceDetails from './_components/card-race-details'
+import { getLastRace } from './actions'
+import CardStatistics from './_components/card-statistics'
+import { GenerateNewRaceDialog } from './_components/generate-new-race-dialog'
 
 export default async function DashboardPage() {
   const race = await getLastRace()
@@ -44,9 +44,7 @@ export default async function DashboardPage() {
             <Card className="col-span-3">
               <CardHeader>
                 <CardTitle>Race Results</CardTitle>
-                <CardDescription>
-                  Results of the last race
-                </CardDescription>
+                <CardDescription>Results of the last race</CardDescription>
               </CardHeader>
               <CardContent>
                 <RaceResult data={race} />

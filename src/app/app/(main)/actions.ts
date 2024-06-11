@@ -1,11 +1,11 @@
-import { prisma } from "@/services/database"
-import { setParticipantsToRaceSchema, upsertRaceSchema } from "./schema"
-import { z } from "zod"
+import { prisma } from '@/services/database'
+import { setParticipantsToRaceSchema, upsertRaceSchema } from './schema'
+import { z } from 'zod'
 
 export async function getRaces() {
   const races = await prisma.race.findMany({
     include: {
-      circuit: true
+      circuit: true,
     },
   })
 
@@ -14,13 +14,13 @@ export async function getRaces() {
 export async function getLastRace() {
   const race = await prisma.race.findFirst({
     orderBy: {
-      id: "desc"
+      id: 'desc',
     },
     include: {
       circuit: true,
       weather: true,
       participants: true,
-      winner: true
+      winner: true,
     },
   })
 
@@ -53,7 +53,7 @@ export async function getPilots() {
 export async function getTop5Pilots(raceId: number) {
   const top5Participants = await prisma.raceParticipation.findMany({
     where: {
-      raceId: raceId, // Adicione aqui o ID da corrida específica
+      raceId, // Adicione aqui o ID da corrida específica
     },
     orderBy: {
       position: 'asc', // Ordena por posição em ordem crescente
@@ -62,18 +62,18 @@ export async function getTop5Pilots(raceId: number) {
     include: {
       pilot: {
         include: {
-          scuderia: true
-        }
-      }
+          scuderia: true,
+        },
+      },
     },
-  });
+  })
 
   return top5Participants
 }
 export async function getWinner(raceId: number) {
   const winner = await prisma.raceParticipation.findMany({
     where: {
-      raceId: raceId, // Adicione aqui o ID da corrida específica
+      raceId, // Adicione aqui o ID da corrida específica
     },
     orderBy: {
       position: 'asc', // Ordena por posição em ordem crescente
@@ -82,11 +82,11 @@ export async function getWinner(raceId: number) {
     include: {
       pilot: {
         include: {
-          scuderia: true
-        }
-      }
+          scuderia: true,
+        },
+      },
     },
-  });
+  })
 
   return winner
 }
@@ -115,7 +115,9 @@ export async function upsertRace(raceData: z.infer<typeof upsertRaceSchema>) {
   }
 }
 
-export async function setParticipantsToRace(participants: z.infer<typeof setParticipantsToRaceSchema>) {
+export async function setParticipantsToRace(
+  participants: z.infer<typeof setParticipantsToRaceSchema>,
+) {
   const response = await fetch('/api/participants', {
     method: 'POST',
     headers: {
@@ -135,14 +137,13 @@ export async function setPilotWinner(raceId: number, pilotId: number) {
   if (pilotId) {
     const winner = prisma.race.update({
       where: {
-        id: raceId
+        id: raceId,
       },
       data: {
-        winnerId: pilotId
-      }
+        winnerId: pilotId,
+      },
     })
 
     return winner
   }
 }
-
