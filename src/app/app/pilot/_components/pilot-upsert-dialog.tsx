@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import { useEffect, useRef, useState } from 'react'
 import {
   Form,
@@ -28,28 +28,39 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { upsertPilotSchema } from '../schema'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
 
 type PilotUpsertDialogProps = {
   children?: React.ReactNode
   defaultValues?: Pilot
-  action?: "edit" | "new"
+  action?: 'edit' | 'new'
 }
 
 type ScuderiaProps = {
-  id: number;
-  name: string;
-  country: string;
+  id: number
+  name: string
+  country: string
 }
 
-export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpsertDialogProps) {
+export function PilotUpsertDialog({
+  children,
+  defaultValues,
+  action,
+}: PilotUpsertDialogProps) {
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false);
-  const [scuderias, setScuderias] = useState<ScuderiaProps[]>([]);
-  const [selectedScuderia, setSelectedScuderia] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [scuderias, setScuderias] = useState<ScuderiaProps[]>([])
+  const [selectedScuderia, setSelectedScuderia] = useState<number | null>(null)
 
   const form = useForm<z.infer<typeof upsertPilotSchema>>({
     resolver: zodResolver(upsertPilotSchema),
@@ -58,29 +69,32 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
       name: defaultValues?.name ?? '',
       age: defaultValues?.age ?? 0,
       nationality: defaultValues?.nationality ?? '',
-      scuderia: defaultValues?.scuderiaId.toString()
+      scuderia: defaultValues?.scuderiaId.toString(),
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true)
-    data.scuderiaId = selectedScuderia === null ? defaultValues?.scuderiaId : Number(selectedScuderia);
+    data.scuderiaId =
+      selectedScuderia === null
+        ? defaultValues?.scuderiaId
+        : Number(selectedScuderia)
     const pilotData = {
       id: data.id,
       name: data.name,
       age: data.age,
       nationality: data.nationality,
       scuderiaId: data.scuderiaId,
-    };
+    }
 
-    await upsertPilot(pilotData);
-    router.refresh();
+    await upsertPilot(pilotData)
+    router.refresh()
 
-    ref.current?.click();
+    ref.current?.click()
 
-    let messageTitle = ""
-    let messageDescription = ""
-    if (action === "edit") {
+    let messageTitle = ''
+    let messageDescription = ''
+    if (action === 'edit') {
       messageTitle = 'Pilot updated'
       messageDescription = 'The pilot has been successfully updated.'
     } else {
@@ -91,18 +105,18 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
     toast({
       title: messageTitle,
       description: messageDescription,
-    });
+    })
     setIsLoading(false)
   })
 
   useEffect(() => {
     const fetchScuderias = async () => {
-      const scuderiasData = await getScuderia();
-      setScuderias(scuderiasData);
-    };
+      const scuderiasData = await getScuderia()
+      setScuderias(scuderiasData)
+    }
 
-    fetchScuderias();
-  }, []);
+    fetchScuderias()
+  }, [])
 
   return (
     <Dialog>
@@ -128,13 +142,11 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter the pilot's name"
-                      {...field}
-                    />
+                    <Input placeholder="Enter the pilot's name" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter the full name of the pilot you wish to register or update.
+                    Enter the full name of the pilot you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -152,13 +164,11 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
                       placeholder="Enter your age"
                       {...field}
                       onChange={(e) => {
-                        form.setValue('age', Number(e.target.value));
+                        form.setValue('age', Number(e.target.value))
                       }}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter the pilot&apos;s age.
-                  </FormDescription>
+                  <FormDescription>Enter the pilot&apos;s age.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -176,7 +186,8 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter the nationality of the pilot you wish to register or update.
+                    Enter the nationality of the pilot you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -189,17 +200,19 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
                 <FormItem>
                   <FormLabel>Scuderia</FormLabel>
                   <FormControl>
-                    <Select {...field}
+                    <Select
+                      {...field}
                       onValueChange={(e) => {
                         field.onChange(e)
                         setSelectedScuderia(Number(e))
-                      }}>
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a scuderia" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {scuderias.map(scuderia => (
+                          {scuderias.map((scuderia) => (
                             <SelectItem
                               key={scuderia.id}
                               value={scuderia.id.toString()}
@@ -212,7 +225,8 @@ export function PilotUpsertDialog({ children, defaultValues, action }: PilotUpse
                     </Select>
                   </FormControl>
                   <FormDescription>
-                    Select the scuderia of the pilot you wish to register or update.
+                    Select the scuderia of the pilot you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

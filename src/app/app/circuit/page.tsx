@@ -1,18 +1,18 @@
-import { Metadata } from "next"  // Importa o tipo Metadata do Next.js
+import { Metadata } from 'next' // Importa o tipo Metadata do Next.js
 
-import { DataTable } from "@/app/app/circuit/_components/data-table/data-table"  // Importa o componente de tabela de dados
-import { columns } from "@/app/app/circuit/_components/data-table/data-table-columns"  // Importa as colunas para a tabela de dados
+import { DataTable } from '@/app/app/circuit/_components/data-table/data-table' // Importa o componente de tabela de dados
+import { columns } from '@/app/app/circuit/_components/data-table/data-table-columns' // Importa as colunas para a tabela de dados
 
 import { getCircuits } from './actions'
 
 export const metadata: Metadata = {
-  title: "Dashboard",  // Título da página
-  description: "Example dashboard app built using the components.",  // Descrição da página
+  title: 'Dashboard', // Título da página
+  description: 'Example dashboard app built using the components.', // Descrição da página
 }
 
 // Componente funcional Page, assíncrono devido à leitura de tarefas
 export default async function Circuit() {
-  const circuit = await getCircuits()  // Obtém as tarefas
+  const circuit = await getCircuits() // Obtém as tarefas
 
   return (
     <>

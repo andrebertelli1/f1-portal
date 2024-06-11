@@ -6,6 +6,9 @@ export async function GET() {
     const circuits = await prisma.circuit.findMany()
     return NextResponse.json(circuits)
   } catch (error) {
-    return NextResponse.json({ error: 'An error occurred while fetching circuits' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'An error occurred while fetching circuits' },
+      { status: 500 },
+    )
   }
 }

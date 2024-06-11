@@ -1,9 +1,9 @@
 'use server'
 
-import { auth } from "@/services/auth";
-import { prisma } from "@/services/database";
-import { z } from "zod";
-import { deleteRaceSchema, upsertRaceSchema } from "./schema";
+import { auth } from '@/services/auth'
+import { prisma } from '@/services/database'
+import { z } from 'zod'
+import { deleteRaceSchema, upsertRaceSchema } from './schema'
 
 export async function getRaces() {
   const races = await prisma.race.findMany({
@@ -19,22 +19,19 @@ export async function getRaces() {
 }
 
 export async function getCircuits() {
-  const circuit = await prisma.circuit.findMany({
-  })
+  const circuit = await prisma.circuit.findMany({})
 
   return circuit
 }
 
 export async function getWeather() {
-  const weather = await prisma.weather.findMany({
-  })
+  const weather = await prisma.weather.findMany({})
 
   return weather
 }
 
 export async function getPilots() {
-  const pilot = await prisma.pilot.findMany({
-  })
+  const pilot = await prisma.pilot.findMany({})
 
   return pilot
 }
@@ -77,19 +74,19 @@ export async function upsertRace(input: z.infer<typeof upsertRaceSchema>) {
         temperature: input.temperature,
         circuit: {
           connect: {
-            id: input.circuitId
-          }
+            id: input.circuitId,
+          },
         },
         weather: {
           connect: {
-            id: input.weatherId
-          }
+            id: input.weatherId,
+          },
         },
         winner: {
           connect: {
-            id: input.winnerId
-          }
-        }
+            id: input.winnerId,
+          },
+        },
       },
     })
 
@@ -104,9 +101,9 @@ export async function upsertRace(input: z.infer<typeof upsertRaceSchema>) {
       date: input.date,
       circuit: {
         connect: {
-          id: input.circuitId
-        }
-      }
+          id: input.circuitId,
+        },
+      },
     },
   })
   return race
@@ -124,7 +121,7 @@ export async function deleteRace(input: z.infer<typeof deleteRaceSchema>) {
 
   const race = await prisma.race.findUnique({
     where: {
-      id: input.id
+      id: input.id,
     },
     select: {
       id: true,
@@ -140,7 +137,7 @@ export async function deleteRace(input: z.infer<typeof deleteRaceSchema>) {
 
   await prisma.race.delete({
     where: {
-      id: input.id
+      id: input.id,
     },
   })
 
@@ -149,7 +146,3 @@ export async function deleteRace(input: z.infer<typeof deleteRaceSchema>) {
     data: race,
   }
 }
-
-
-
-

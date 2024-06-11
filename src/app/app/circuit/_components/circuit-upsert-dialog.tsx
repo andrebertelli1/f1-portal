@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import { useRef, useState } from 'react'
 import {
   Form,
@@ -25,8 +25,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
 
 import { useForm } from 'react-hook-form'
 import { Circuit } from '../types'
@@ -41,14 +41,18 @@ import { Loader2 } from 'lucide-react'
 type CircuitUpsertDialogProps = {
   children?: React.ReactNode
   defaultValues?: Circuit
-  action?: "edit" | "new"
+  action?: 'edit' | 'new'
 }
 
-export function CircuitUpsertDialog({ children, defaultValues, action }: CircuitUpsertDialogProps) {
+export function CircuitUpsertDialog({
+  children,
+  defaultValues,
+  action,
+}: CircuitUpsertDialogProps) {
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof upsertCircuitSchema>>({
     resolver: zodResolver(upsertCircuitSchema),
@@ -56,27 +60,27 @@ export function CircuitUpsertDialog({ children, defaultValues, action }: Circuit
       id: defaultValues?.id,
       name: defaultValues?.name ?? '',
       location: defaultValues?.location ?? '',
-      length: defaultValues?.length ?? 0
+      length: defaultValues?.length ?? 0,
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
+    setIsLoading(true)
     const circuitData = {
       id: data.id,
       name: data.name,
       location: data.location,
-      length: data.length
-    };
+      length: data.length,
+    }
 
-    await upsertCircuit(circuitData);
-    router.refresh();
+    await upsertCircuit(circuitData)
+    router.refresh()
 
-    ref.current?.click();
+    ref.current?.click()
 
-    let messageTitle = ""
-    let messageDescription = ""
-    if (action === "edit") {
+    let messageTitle = ''
+    let messageDescription = ''
+    if (action === 'edit') {
       messageTitle = 'Circuit updated'
       messageDescription = 'The circuit has been successfully updated.'
     } else {
@@ -87,8 +91,8 @@ export function CircuitUpsertDialog({ children, defaultValues, action }: Circuit
     toast({
       title: messageTitle,
       description: messageDescription,
-    });
-    setIsLoading(false);
+    })
+    setIsLoading(false)
   })
 
   return (
@@ -103,7 +107,8 @@ export function CircuitUpsertDialog({ children, defaultValues, action }: Circuit
             <DialogHeader>
               <DialogTitle>New Circuit</DialogTitle>
               <DialogDescription>
-                Make changes or create a new circuit here. Click save when you re done.
+                Make changes or create a new circuit here. Click save when you
+                re done.
               </DialogDescription>
             </DialogHeader>
 
@@ -114,13 +119,11 @@ export function CircuitUpsertDialog({ children, defaultValues, action }: Circuit
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter the circuit's name"
-                      {...field}
-                    />
+                    <Input placeholder="Enter the circuit's name" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter the full name of the circuit you wish to register or update.
+                    Enter the full name of the circuit you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -133,14 +136,9 @@ export function CircuitUpsertDialog({ children, defaultValues, action }: Circuit
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter the race location"
-                      {...field}
-                    />
+                    <Input placeholder="Enter the race location" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter the location.
-                  </FormDescription>
+                  <FormDescription>Enter the location.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

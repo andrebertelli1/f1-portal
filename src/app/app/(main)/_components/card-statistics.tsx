@@ -1,54 +1,54 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { getWinner } from "../actions";
-import { Crown } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { getWinner } from '../actions'
+import { Crown } from 'lucide-react'
 
 interface CardStatisticsProps {
-  data: RaceProps;
+  data: RaceProps
   winner: PilotProps
 }
 
 type PilotProps = {
-  id: number;
-  name: String;
+  id: number
+  name: string
 }
 
 type ParticipantsProps = {
-  id: number;
-  raceId: number;
-  pilotId: number;
-  position: number;
+  id: number
+  raceId: number
+  pilotId: number
+  position: number
 }
 
 type CircuitProps = {
-  id: number;
-  name: String;
-  location: String;
-  length: number;
-  laps: number;
+  id: number
+  name: string
+  location: string
+  length: number
+  laps: number
 }
 
 type WeatherProps = {
-  id: number;
-  condition: String;
+  id: number
+  condition: string
 }
 
 type WinnerProps = {
-  id: number;
-  name: string;
+  id: number
+  name: string
 }
 
 type RaceProps = {
-  id: number;
-  name: string;
-  date: Date;
-  weatherId: number;
-  weather: WeatherProps;
-  temperature: number;
-  circuitId: number;
-  circuit: CircuitProps;
-  winnerId: number;
-  winner: WinnerProps;
-  participants: ParticipantsProps;
+  id: number
+  name: string
+  date: Date
+  weatherId: number
+  weather: WeatherProps
+  temperature: number
+  circuitId: number
+  circuit: CircuitProps
+  winnerId: number
+  winner: WinnerProps
+  participants: ParticipantsProps
 }
 
 export default async function CardStatistics({ data }: CardStatisticsProps) {
@@ -67,17 +67,18 @@ export default async function CardStatistics({ data }: CardStatisticsProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-gray-500 dark:text-gray-400 mb-1">Laps</p>
-              <p>{data?.circuit.laps ?? "N/A"}</p>
+              <p>{data?.circuit.laps ?? 'N/A'}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-gray-500 dark:text-gray-400 mb-1">Race Winner</p>
-              <p>{winner[0]?.pilot.name ?? "N/A"}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-1">
+                Race Winner
+              </p>
+              <p>{winner[0]?.pilot.name ?? 'N/A'}</p>
             </div>
           </div>
         </div>
-
       </CardContent>
     </Card>
   )

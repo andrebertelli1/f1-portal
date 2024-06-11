@@ -1,25 +1,25 @@
 'use server'
 
-import { auth } from "@/services/auth";
-import { prisma } from "@/services/database";
-import { z } from "zod";
-import { deleteCircuitSchema, upsertCircuitSchema } from "./schema";
+import { auth } from '@/services/auth'
+import { prisma } from '@/services/database'
+import { z } from 'zod'
+import { deleteCircuitSchema, upsertCircuitSchema } from './schema'
 
 export async function getCircuits() {
-  const circuits = await prisma.circuit.findMany({
-  })
+  const circuits = await prisma.circuit.findMany({})
 
   return circuits
 }
 
 export async function getWinners() {
-  const winners = await prisma.raceParticipation.findMany({
-  })
+  const winners = await prisma.raceParticipation.findMany({})
 
   return winners
 }
 
-export async function upsertCircuit(input: z.infer<typeof upsertCircuitSchema>) {
+export async function upsertCircuit(
+  input: z.infer<typeof upsertCircuitSchema>,
+) {
   if (!input.name) {
     return {
       error: 'Circuit name is required',
@@ -51,7 +51,7 @@ export async function upsertCircuit(input: z.infer<typeof upsertCircuitSchema>) 
       data: {
         name: input.name,
         location: input.location,
-        length: input.length
+        length: input.length,
       },
     })
 
@@ -65,14 +65,16 @@ export async function upsertCircuit(input: z.infer<typeof upsertCircuitSchema>) 
     data: {
       name: input.name,
       location: input.location,
-      length: input.length
+      length: input.length,
     },
   })
 
   return circuit
 }
 
-export async function deleteCircuit(input: z.infer<typeof deleteCircuitSchema>) {
+export async function deleteCircuit(
+  input: z.infer<typeof deleteCircuitSchema>,
+) {
   const session = await auth()
 
   if (!session?.user?.id) {
@@ -84,7 +86,7 @@ export async function deleteCircuit(input: z.infer<typeof deleteCircuitSchema>) 
 
   const circuit = await prisma.circuit.findUnique({
     where: {
-      id: input.id
+      id: input.id,
     },
     select: {
       id: true,
@@ -100,7 +102,7 @@ export async function deleteCircuit(input: z.infer<typeof deleteCircuitSchema>) 
 
   await prisma.circuit.delete({
     where: {
-      id: input.id
+      id: input.id,
     },
   })
 
@@ -109,7 +111,3 @@ export async function deleteCircuit(input: z.infer<typeof deleteCircuitSchema>) 
     data: circuit,
   }
 }
-
-
-
-

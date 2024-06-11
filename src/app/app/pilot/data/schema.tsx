@@ -1,10 +1,10 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 const scuderiaSchema = z.object({
   id: z.number(),
   name: z.string(),
   country: z.string(),
-});
+})
 
 export const pilotSchema = z.object({
   id: z.number(),

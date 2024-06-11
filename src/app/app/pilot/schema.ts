@@ -5,7 +5,7 @@ export const upsertPilotSchema = z.object({
   name: z.string(),
   age: z.number().optional(),
   nationality: z.string(),
-  scuderiaId: z.number().optional()
+  scuderiaId: z.number().optional(),
 })
 
 export const deletePilotSchema = z.object({

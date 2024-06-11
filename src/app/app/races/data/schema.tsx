@@ -1,23 +1,23 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 const circuitSchema = z.object({
   id: z.number(),
   name: z.string(),
   location: z.string(),
-  length: z.number()
-});
+  length: z.number(),
+})
 
 const weatherSchema = z.object({
   id: z.number(),
-  condition: z.string()
-});
+  condition: z.string(),
+})
 
 const pilotSchema = z.object({
   id: z.number(),
   name: z.string(),
   age: z.number(),
   nationality: z.string(),
-});
+})
 
 export const raceSchema = z.object({
   id: z.number().optional(),

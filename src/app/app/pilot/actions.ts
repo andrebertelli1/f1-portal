@@ -1,9 +1,9 @@
 'use server'
 
-import { auth } from "@/services/auth";
-import { prisma } from "@/services/database";
-import { z } from "zod";
-import { deletePilotSchema, upsertPilotSchema } from "./schema";
+import { auth } from '@/services/auth'
+import { prisma } from '@/services/database'
+import { z } from 'zod'
+import { deletePilotSchema, upsertPilotSchema } from './schema'
 
 // Função assíncrona para simular a leitura de um banco de dados para obter tarefas
 export async function getPilots() {
@@ -28,8 +28,7 @@ export async function getScuderiaByID(scuderiaId: number) {
 
 // Função assíncrona para simular a leitura de um banco de dados para obter as scuderias
 export async function getScuderia() {
-  const scuderia = await prisma.scuderia.findMany({
-  })
+  const scuderia = await prisma.scuderia.findMany({})
 
   return scuderia
 }
@@ -69,9 +68,9 @@ export async function upsertPilot(input: z.infer<typeof upsertPilotSchema>) {
         nationality: input.nationality,
         scuderia: {
           connect: {
-            id: input.scuderiaId
-          }
-        }
+            id: input.scuderiaId,
+          },
+        },
       },
     })
 
@@ -88,9 +87,9 @@ export async function upsertPilot(input: z.infer<typeof upsertPilotSchema>) {
       nationality: input.nationality,
       scuderia: {
         connect: {
-          id: input.scuderiaId
-        }
-      }
+          id: input.scuderiaId,
+        },
+      },
     },
   })
 
@@ -109,7 +108,7 @@ export async function deletePilot(input: z.infer<typeof deletePilotSchema>) {
 
   const pilot = await prisma.pilot.findUnique({
     where: {
-      id: input.id
+      id: input.id,
     },
     select: {
       id: true,
@@ -125,7 +124,7 @@ export async function deletePilot(input: z.infer<typeof deletePilotSchema>) {
 
   await prisma.pilot.delete({
     where: {
-      id: input.id
+      id: input.id,
     },
   })
 
@@ -134,7 +133,3 @@ export async function deletePilot(input: z.infer<typeof deletePilotSchema>) {
     data: pilot,
   }
 }
-
-
-
-

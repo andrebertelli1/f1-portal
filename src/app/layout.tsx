@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google"
-import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "./_components/theme-provider";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
+import { ThemeProvider } from './_components/theme-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "AXA",
-};
+  title: 'AXA',
+}
 
 export default function RootLayout({
   children,

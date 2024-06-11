@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import { useEffect, useRef, useState } from 'react'
 import {
   Form,
@@ -27,12 +27,23 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { upsertRaceSchema } from '../schema'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { z } from 'zod'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { Calendar as CalendarIcon, Loader2 } from 'lucide-react'
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from '@/components/ui/calendar'
 
 import { format } from 'date-fns'
 import { Input } from '@/components/ui/input'
@@ -40,41 +51,47 @@ import { Input } from '@/components/ui/input'
 type RaceUpsertDialogProps = {
   children?: React.ReactNode
   defaultValues?: Race
-  action?: "edit" | "new"
+  action?: 'edit' | 'new'
 }
 
 type CircuitsProps = {
-  id: number;
-  name: string;
-  location: string;
-  length?: number;
+  id: number
+  name: string
+  location: string
+  length?: number
 }
 
 type WeatherProps = {
-  id: number;
-  condition: string;
+  id: number
+  condition: string
 }
 
 type PilotProps = {
-  id: number,
-  name: string,
-  age: number,
-  photoUrl: string,
+  id: number
+  name: string
+  age: number
+  photoUrl: string
   nationality: string
 }
 
-export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsertDialogProps) {
+export function RaceUpsertDialog({
+  children,
+  defaultValues,
+  action,
+}: RaceUpsertDialogProps) {
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [circuits, setCircuits] = useState<CircuitsProps[]>([]);
-  const [selectedCircuit, setSelectedCircuit] = useState<number | null>(null);
-  const [weather, setWeather] = useState<WeatherProps[]>([]);
-  const [selectedWeather, setSelectedWeather] = useState<number | null>(null);
-  const [pilots, setPilots] = useState<PilotProps[]>([]);
-  const [selectedPilot, setSelectedPilot] = useState<number | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValues?.date ? new Date(defaultValues.date) : null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [circuits, setCircuits] = useState<CircuitsProps[]>([])
+  const [selectedCircuit, setSelectedCircuit] = useState<number | null>(null)
+  const [weather, setWeather] = useState<WeatherProps[]>([])
+  const [selectedWeather, setSelectedWeather] = useState<number | null>(null)
+  const [pilots, setPilots] = useState<PilotProps[]>([])
+  const [selectedPilot, setSelectedPilot] = useState<number | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    defaultValues?.date ? new Date(defaultValues.date) : null,
+  )
 
   const form = useForm<z.infer<typeof upsertRaceSchema>>({
     resolver: zodResolver(upsertRaceSchema),
@@ -85,16 +102,23 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
       weather: defaultValues?.weatherId.toString(),
       temperature: defaultValues?.temperature ?? 0,
       circuit: defaultValues?.circuitId.toString(),
-      winner: defaultValues?.winnerId.toString()
+      winner: defaultValues?.winnerId.toString(),
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(false)
-    data.circuitId = selectedCircuit === null ? defaultValues?.circuitId : Number(selectedCircuit);
-    data.weatherId = selectedWeather === null ? defaultValues?.weatherId : Number(selectedWeather);
-    data.winnerId = selectedPilot === null ? defaultValues?.winnerId : Number(selectedPilot);
-    data.date = selectedDate ?? defaultValues?.date ?? null;
+    data.circuitId =
+      selectedCircuit === null
+        ? defaultValues?.circuitId
+        : Number(selectedCircuit)
+    data.weatherId =
+      selectedWeather === null
+        ? defaultValues?.weatherId
+        : Number(selectedWeather)
+    data.winnerId =
+      selectedPilot === null ? defaultValues?.winnerId : Number(selectedPilot)
+    data.date = selectedDate ?? defaultValues?.date ?? null
 
     const raceData = {
       id: data.id,
@@ -103,18 +127,18 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
       weatherId: data.weatherId,
       temperature: data.temperature,
       circuitId: data.circuitId,
-      winnerId: data.winnerId
-    };
+      winnerId: data.winnerId,
+    }
 
-    console.log("raceData", raceData)
-    await upsertRace(raceData);
-    router.refresh();
+    console.log('raceData', raceData)
+    await upsertRace(raceData)
+    router.refresh()
 
-    ref.current?.click();
+    ref.current?.click()
 
-    let messageTitle = ""
-    let messageDescription = ""
-    if (action === "edit") {
+    let messageTitle = ''
+    let messageDescription = ''
+    if (action === 'edit') {
       messageTitle = 'Race updated'
       messageDescription = 'The race has been successfully updated.'
     } else {
@@ -125,28 +149,28 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
     toast({
       title: messageTitle,
       description: messageDescription,
-    });
+    })
     setIsLoading(false)
   })
 
   useEffect(() => {
     const fetchCircuits = async () => {
-      const circuitsData = await getCircuits();
-      setCircuits(circuitsData);
-    };
+      const circuitsData = await getCircuits()
+      setCircuits(circuitsData)
+    }
     const fetchWeathers = async () => {
-      const weatherData = await getWeather();
-      setWeather(weatherData);
-    };
+      const weatherData = await getWeather()
+      setWeather(weatherData)
+    }
     const fetchPilot = async () => {
-      const pilotsData = await getPilots();
-      setPilots(pilotsData);
-    };
+      const pilotsData = await getPilots()
+      setPilots(pilotsData)
+    }
 
-    fetchCircuits();
-    fetchWeathers();
-    fetchPilot();
-  }, []);
+    fetchCircuits()
+    fetchWeathers()
+    fetchPilot()
+  }, [])
 
   return (
     <Dialog>
@@ -160,8 +184,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
             <DialogHeader>
               <DialogTitle>New Race</DialogTitle>
               <DialogDescription>
-                Make changes to the race here. Click save when you are
-                done.
+                Make changes to the race here. Click save when you are done.
               </DialogDescription>
             </DialogHeader>
 
@@ -172,10 +195,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter the pilot's name"
-                      {...field}
-                    />
+                    <Input placeholder="Enter the pilot's name" {...field} />
                   </FormControl>
                   <FormDescription>
                     Enter the full name of the pilot you want to update.
@@ -189,20 +209,24 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
               control={form.control}
               name="date"
               render={({ field }) => (
-                <FormItem className='grid'>
+                <FormItem className="grid">
                   <FormLabel>Date</FormLabel>
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
-                          variant={"outline"}
+                          variant={'outline'}
                           className={cn(
-                            "w-[280px] justify-start text-left font-normal",
-                            !selectedDate && "text-muted-foreground"
+                            'w-[280px] justify-start text-left font-normal',
+                            !selectedDate && 'text-muted-foreground',
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                          {selectedDate ? (
+                            format(selectedDate, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
@@ -215,9 +239,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                       </PopoverContent>
                     </Popover>
                   </FormControl>
-                  <FormDescription>
-                    Enter the date.
-                  </FormDescription>
+                  <FormDescription>Enter the date.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -230,17 +252,19 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                 <FormItem>
                   <FormLabel>Weather</FormLabel>
                   <FormControl>
-                    <Select {...field}
+                    <Select
+                      {...field}
                       onValueChange={(e) => {
                         field.onChange(e)
                         setSelectedWeather(Number(e))
-                      }}>
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a weather" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {weather.map(weather => (
+                          {weather.map((weather) => (
                             <SelectItem
                               key={weather.id}
                               value={weather.id.toString()}
@@ -252,9 +276,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormDescription>
-                    Select a Weather
-                  </FormDescription>
+                  <FormDescription>Select a Weather</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -272,13 +294,11 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                       placeholder="Enter temperature"
                       {...field}
                       onChange={(e) => {
-                        form.setValue('temperature', Number(e.target.value));
+                        form.setValue('temperature', Number(e.target.value))
                       }}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter the pilot&apos;s age.
-                  </FormDescription>
+                  <FormDescription>Enter the pilot&apos;s age.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -291,17 +311,19 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                 <FormItem>
                   <FormLabel>Circuit</FormLabel>
                   <FormControl>
-                    <Select {...field}
+                    <Select
+                      {...field}
                       onValueChange={(e) => {
                         field.onChange(e)
                         setSelectedCircuit(Number(e))
-                      }}>
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a circuit" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {circuits.map(circuit => (
+                          {circuits.map((circuit) => (
                             <SelectItem
                               key={circuit.id}
                               value={circuit.id.toString()}
@@ -313,9 +335,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormDescription>
-                    Select a circuit
-                  </FormDescription>
+                  <FormDescription>Select a circuit</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -328,17 +348,19 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                 <FormItem>
                   <FormLabel>Winner</FormLabel>
                   <FormControl>
-                    <Select {...field}
+                    <Select
+                      {...field}
                       onValueChange={(e) => {
                         field.onChange(e)
                         setSelectedPilot(Number(e))
-                      }}>
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a pilot" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {pilots.map(pilot => (
+                          {pilots.map((pilot) => (
                             <SelectItem
                               key={pilot.id}
                               value={pilot.id.toString()}
@@ -350,9 +372,7 @@ export function RaceUpsertDialog({ children, defaultValues, action }: RaceUpsert
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormDescription>
-                    Select a Pilot
-                  </FormDescription>
+                  <FormDescription>Select a Pilot</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

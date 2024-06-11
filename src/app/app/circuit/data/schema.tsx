@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod'
 export const circuitSchema = z.object({
   id: z.number(),
   name: z.string(),

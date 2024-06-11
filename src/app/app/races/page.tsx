@@ -1,16 +1,16 @@
-import { Metadata } from "next"  // Importa o tipo Metadata do Next.js
+import { Metadata } from 'next' // Importa o tipo Metadata do Next.js
 
 import { getRaces } from './actions'
-import { DataTable } from "@/app/app/races/_components/data-table/data-table"  // Importa o componente de tabela de dados
-import { columns } from "@/app/app/races/_components/data-table/data-table-columns"  //
+import { DataTable } from '@/app/app/races/_components/data-table/data-table' // Importa o componente de tabela de dados
+import { columns } from '@/app/app/races/_components/data-table/data-table-columns' //
 
 export const metadata: Metadata = {
-  title: "Dashboard",  // Título da página
-  description: "Example dashboard app built using the components.",
+  title: 'Dashboard', // Título da página
+  description: 'Example dashboard app built using the components.',
 }
 
 export default async function Race() {
-  const race = await getRaces()  // Obtém as tarefas
+  const race = await getRaces() // Obtém as tarefas
 
   return (
     <>

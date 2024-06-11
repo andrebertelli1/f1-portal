@@ -1,22 +1,22 @@
-"use client"
+'use client'
 
-import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { Row } from "@tanstack/react-table"
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { Row } from '@tanstack/react-table'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 
-import { Pilot, pilotSchema } from "../../data/schema"
-import { useRouter } from "next/navigation"
-import { deletePilot } from "../../actions"
-import { PilotUpsertDialog } from "../pilot-upsert-dialog"
-import { toast } from "@/components/ui/use-toast"
+import { Pilot, pilotSchema } from '../../data/schema'
+import { useRouter } from 'next/navigation'
+import { deletePilot } from '../../actions'
+import { PilotUpsertDialog } from '../pilot-upsert-dialog'
+import { toast } from '@/components/ui/use-toast'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -61,6 +61,6 @@ export function DataTableRowActions<TData>({
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu >
+    </DropdownMenu>
   )
 }

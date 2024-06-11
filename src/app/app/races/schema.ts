@@ -7,7 +7,7 @@ export const upsertRaceSchema = z.object({
   weatherId: z.number().optional(),
   temperature: z.number().optional(),
   circuitId: z.number().optional(),
-  winnerId: z.number().optional()
+  winnerId: z.number().optional(),
 })
 
 export const deleteRaceSchema = z.object({

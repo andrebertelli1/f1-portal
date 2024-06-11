@@ -1,19 +1,20 @@
 'use server'
 
-import { auth } from "@/services/auth";
-import { prisma } from "@/services/database";
-import { z } from "zod";
-import { deleteScuderiaSchema, upsertScuderiaSchema } from "./schema";
-import { error } from "console";
+import { auth } from '@/services/auth'
+import { prisma } from '@/services/database'
+import { z } from 'zod'
+import { deleteScuderiaSchema, upsertScuderiaSchema } from './schema'
+import { error } from 'console'
 
 export async function getScuderia() {
-  const scuderias = await prisma.scuderia.findMany({
-  })
+  const scuderias = await prisma.scuderia.findMany({})
 
   return scuderias
 }
 
-export async function upsertScuderia(input: z.infer<typeof upsertScuderiaSchema>) {
+export async function upsertScuderia(
+  input: z.infer<typeof upsertScuderiaSchema>,
+) {
   if (!input.name) {
     return {
       error: 'Name is required',
@@ -44,7 +45,7 @@ export async function upsertScuderia(input: z.infer<typeof upsertScuderiaSchema>
       },
       data: {
         name: input.name,
-        country: input.country
+        country: input.country,
       },
     })
 
@@ -57,14 +58,16 @@ export async function upsertScuderia(input: z.infer<typeof upsertScuderiaSchema>
   const scuderia = await prisma.scuderia.create({
     data: {
       name: input.name,
-      country: input.country
+      country: input.country,
     },
   })
 
   return scuderia
 }
 
-export async function deleteScuderia(input: z.infer<typeof deleteScuderiaSchema>) {
+export async function deleteScuderia(
+  input: z.infer<typeof deleteScuderiaSchema>,
+) {
   const session = await auth()
 
   if (!session?.user?.id) {
@@ -76,11 +79,11 @@ export async function deleteScuderia(input: z.infer<typeof deleteScuderiaSchema>
 
   const scuderia = await prisma.scuderia.findUnique({
     where: {
-      id: input.id
+      id: input.id,
     },
     select: {
       id: true,
-      pilots: true
+      pilots: true,
     },
   })
 
@@ -100,7 +103,7 @@ export async function deleteScuderia(input: z.infer<typeof deleteScuderiaSchema>
 
   await prisma.scuderia.delete({
     where: {
-      id: input.id
+      id: input.id,
     },
   })
 

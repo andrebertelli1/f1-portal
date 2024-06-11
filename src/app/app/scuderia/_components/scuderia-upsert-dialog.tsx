@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import { useRef, useState } from 'react'
 import {
   Form,
@@ -34,14 +34,18 @@ import { Loader2 } from 'lucide-react'
 type ScuderiaUpsertDialogProps = {
   children?: React.ReactNode
   defaultValues?: Scuderia
-  action?: "edit" | "new"
+  action?: 'edit' | 'new'
 }
 
-export function ScuderiaUpsertDialog({ children, defaultValues, action }: ScuderiaUpsertDialogProps) {
+export function ScuderiaUpsertDialog({
+  children,
+  defaultValues,
+  action,
+}: ScuderiaUpsertDialogProps) {
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const form = useForm<z.infer<typeof upsertScuderiaSchema>>({
     resolver: zodResolver(upsertScuderiaSchema),
     defaultValues: {
@@ -49,18 +53,18 @@ export function ScuderiaUpsertDialog({ children, defaultValues, action }: Scuder
       name: defaultValues?.name ?? '',
       country: defaultValues?.country ?? '',
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true)
-    await upsertScuderia(data);
-    router.refresh();
+    await upsertScuderia(data)
+    router.refresh()
 
-    ref.current?.click();
+    ref.current?.click()
 
-    let messageTitle = ""
-    let messageDescription = ""
-    if (action === "edit") {
+    let messageTitle = ''
+    let messageDescription = ''
+    if (action === 'edit') {
       messageTitle = 'Scuderia updated'
       messageDescription = 'The scuderia has been successfully updated.'
     } else {
@@ -71,7 +75,7 @@ export function ScuderiaUpsertDialog({ children, defaultValues, action }: Scuder
     toast({
       title: messageTitle,
       description: messageDescription,
-    });
+    })
     setIsLoading(false)
   })
 
@@ -87,8 +91,8 @@ export function ScuderiaUpsertDialog({ children, defaultValues, action }: Scuder
             <DialogHeader>
               <DialogTitle>New Scuderia</DialogTitle>
               <DialogDescription>
-                Make changes or create a new scuderia here. Click save when you re
-                done.
+                Make changes or create a new scuderia here. Click save when you
+                re done.
               </DialogDescription>
             </DialogHeader>
 
@@ -99,13 +103,11 @@ export function ScuderiaUpsertDialog({ children, defaultValues, action }: Scuder
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter the scuderia's name"
-                      {...field}
-                    />
+                    <Input placeholder="Enter the scuderia's name" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter the full name of the scuderia you wish to register or update.
+                    Enter the full name of the scuderia you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -124,7 +126,8 @@ export function ScuderiaUpsertDialog({ children, defaultValues, action }: Scuder
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter the country of the scuderia you wish to register or update.
+                    Enter the country of the scuderia you wish to register or
+                    update.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

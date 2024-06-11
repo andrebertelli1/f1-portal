@@ -6,6 +6,9 @@ export async function GET() {
     const weather = await prisma.weather.findMany()
     return NextResponse.json(weather)
   } catch (error) {
-    return NextResponse.json({ error: 'An error occurred while fetching weather' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'An error occurred while fetching weather' },
+      { status: 500 },
+    )
   }
 }
