@@ -1,0 +1,127 @@
+// Este é o arquivo de schema do Prisma, que define a estrutura do banco de dados.
+
+// Configuração do datasource com SQLite como provedor de banco de dados.
+datasource db {
+  provider = "sqlite" // Define o provedor do banco de dados como SQLite.
+  url      = "file:./dev.db" // Caminho para o arquivo do banco de dados SQLite.
+}
+
+// Configuração do gerador do cliente Prisma.
+generator client {
+  provider = "prisma-client-js" // Define o cliente do Prisma para JavaScript.
+}
+
+// Modelo para usuários.
+model User {
+  id            String    @id @default(cuid()) // ID único para o usuário, gerado automaticamente.
+  name          String? // Nome do usuário, opcional.
+  email         String?   @unique // Email do usuário, opcional e único.
+  emailVerified DateTime? // Data de verificação do email, opcional.
+  image         String? // URL da imagem de perfil do usuário, opcional.
+  accounts      Account[] // Relação um-para-muitos com a tabela Account.
+  sessions      Session[] // Relação um-para-muitos com a tabela Session.
+  createdAt     DateTime  @default(now()) // Data de criação do usuário, com valor padrão.
+  updatedAt     DateTime  @updatedAt // Data de atualização do usuário, atualizada automaticamente.
+}
+
+// Modelo para contas associadas aos usuários.
+model Account {
+  id                String   @id @default(cuid()) // ID único para a conta, gerado automaticamente.
+  userId            String // ID do usuário associado.
+  type              String // Tipo da conta (ex: Google, Facebook).
+  provider          String // Provedor da conta (ex: Google, Facebook).
+  providerAccountId String // ID da conta no provedor.
+  refresh_token     String? // Token de atualização, opcional.
+  access_token      String? // Token de acesso, opcional.
+  expires_at        Int? // Timestamp de expiração do token, opcional.
+  token_type        String? // Tipo do token, opcional.
+  scope             String? // Escopo do token, opcional.
+  id_token          String? // Token ID, opcional.
+  session_state     String? // Estado da sessão, opcional.
+  createdAt         DateTime @default(now()) // Data de criação da conta.
+  updatedAt         DateTime @updatedAt // Data de atualização da conta.
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relação muitos-para-um com User.
+
+  @@unique([provider, providerAccountId]) // Índice único combinando provedor e ID do provedor.
+}
+
+// Modelo para sessões de usuários.
+model Session {
+  id           String   @id @default(cuid()) // ID único para a sessão, gerado automaticamente.
+  sessionToken String   @unique // Token de sessão único.
+  userId       String // ID do usuário associado.
+  expires      DateTime // Data de expiração da sessão.
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relação muitos-para-um com User.
+  createdAt    DateTime @default(now()) // Data de criação da sessão.
+  updatedAt    DateTime @updatedAt // Data de atualização da sessão.
+}
+
+// Modelo para tokens de verificação.
+model VerificationToken {
+  identifier String // Identificador para o token (ex: email).
+  token      String   @unique // Token de verificação único.
+  expires    DateTime // Data de expiração do token.
+
+  @@unique([identifier, token]) // Índice único combinando identificador e token.
+}
+
+model Pilot {
+  id             Int                 @id @default(autoincrement())
+  name           String
+  age            Int
+  photoUrl       String?
+  nationality    String
+  scuderiaId     Int
+  scuderia       Scuderia            @relation(fields: [scuderiaId], references: [id])
+  participations RaceParticipation[]
+  Race           Race[]
+}
+
+model Scuderia {
+  id      Int     @id @default(autoincrement())
+  name    String
+  country String
+  pilots  Pilot[]
+}
+
+model Circuit {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String
+  length   Float?
+  laps     Int
+  Race     Race[]
+}
+
+model Weather {
+  id        Int    @id @default(autoincrement())
+  condition String
+  races     Race[]
+}
+
+model Race {
+  id           Int                 @id @default(autoincrement())
+  name         String
+  date         DateTime
+  weatherId    Int
+  weather      Weather             @relation(fields: [weatherId], references: [id])
+  temperature  Float
+  circuitId    Int
+  circuit      Circuit             @relation(fields: [circuitId], references: [id])
+  winnerId     Int
+  winner       Pilot               @relation(fields: [winnerId], references: [id])
+  participants RaceParticipation[]
+
+  @@unique([date, circuitId])
+}
+
+model RaceParticipation {
+  id       Int   @id @default(autoincrement())
+  raceId   Int
+  pilotId  Int
+  position Int?
+  race     Race  @relation(fields: [raceId], references: [id])
+  pilot    Pilot @relation(fields: [pilotId], references: [id])
+
+  @@unique([raceId, pilotId])
+}
