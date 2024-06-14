@@ -4,7 +4,7 @@ import { prisma } from '@/services/database'
 interface RaceData {
   id: number
   name: string
-  date: Date | null
+  date: Date
   weather: number
   temperature: number
   circuit: number
