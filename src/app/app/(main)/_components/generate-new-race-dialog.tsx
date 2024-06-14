@@ -25,7 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 
 import { Input } from '@/components/ui/input'
-import { date, z } from 'zod'
+import { date, number, z } from 'zod'
 import { upsertRaceSchema } from '../schema'
 import { Races } from '../types'
 import {
@@ -109,10 +109,10 @@ export function GenerateNewRaceDialog({
       id: defaultValues?.id,
       name: defaultValues?.name,
       date: defaultValues?.date,
-      weatherId: defaultValues?.weatherId.toString(),
-      temperature: defaultValues?.temperature ?? 0,
-      circuitId: defaultValues?.circuitId.toString(),
-      winnerId: defaultValues?.winnerId.toString(),
+      weatherId: defaultValues?.weatherId,
+      temperature: defaultValues?.temperature,
+      circuitId: defaultValues?.circuitId,
+      winnerId: defaultValues?.winnerId,
     },
   })
 
@@ -129,7 +129,7 @@ export function GenerateNewRaceDialog({
           : Number(selectedWeather)
       data.winnerId =
         selectedPilot === null ? defaultValues?.winnerId : Number(selectedPilot)
-      data.date = selectedDate ?? defaultValues?.date ?? null
+      data.date = selectedDate ?? defaultValues?.date
 
       const raceData = {
         id: data.id,
