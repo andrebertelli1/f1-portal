@@ -115,8 +115,10 @@ export async function upsertRace(raceData: z.infer<typeof upsertRaceSchema>) {
   }
 }
 
+export type ParticipantsArray = z.infer<typeof setParticipantsToRaceSchema>[]
+
 export async function setParticipantsToRace(
-  participants: z.infer<typeof setParticipantsToRaceSchema>,
+  participants: ParticipantsArray,
 ) {
   const response = await fetch('/api/participants', {
     method: 'POST',

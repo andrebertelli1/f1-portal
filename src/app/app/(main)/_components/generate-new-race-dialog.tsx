@@ -26,7 +26,7 @@ import { useRouter } from 'next/navigation'
 
 import { Input } from '@/components/ui/input'
 import { date, number, z } from 'zod'
-import { upsertRaceSchema } from '../schema'
+import { setParticipantsToRaceSchema, upsertRaceSchema } from '../schema'
 import { Races } from '../types'
 import {
   Select,
@@ -37,6 +37,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
+  ParticipantsArray,
   getCircuits,
   getIdLastRace,
   getPilots,
@@ -79,6 +80,13 @@ type PilotProps = {
   age: number
   nationality: string
   scuderiaId: number
+}
+
+type RaceParticipation = {
+  id?: number
+  raceId: number
+  pilotId: number
+  position: number
 }
 
 export function GenerateNewRaceDialog({
@@ -154,15 +162,17 @@ export function GenerateNewRaceDialog({
 
           // Shuffle the positions array to assign random positions
           for (let i = positions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1))
-              ;[positions[i], positions[j]] = [positions[j], positions[i]]
+            const j = Math.floor(Math.random() * (i + 1));
+            [positions[i], positions[j]] = [positions[j], positions[i]]
           }
 
-          const raceParticipations = pilots.map((pilot, index) => ({
-            raceId: lastRaceData.id,
-            pilotId: pilot.id,
-            position: positions[index],
-          }))
+          const raceParticipations: ParticipantsArray = pilots.map(
+            (pilot, index) => ({
+              raceId: lastRaceData.id,
+              pilotId: pilot.id,
+              position: positions[index],
+            }),
+          )
 
           await setParticipantsToRace(raceParticipations)
         }
@@ -259,11 +269,13 @@ export function GenerateNewRaceDialog({
                 ;[positions[i], positions[j]] = [positions[j], positions[i]]
             }
 
-            const raceParticipations = pilots.map((pilot, index) => ({
-              raceId: lastRaceData.id,
-              pilotId: pilot.id,
-              position: positions[index],
-            }))
+            const raceParticipations: ParticipantsArray = pilots.map(
+              (pilot, index) => ({
+                raceId: lastRaceData.id,
+                pilotId: pilot.id,
+                position: positions[index],
+              }),
+            )
 
             await setParticipantsToRace(raceParticipations)
           }
